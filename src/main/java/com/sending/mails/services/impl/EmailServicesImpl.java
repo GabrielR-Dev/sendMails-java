@@ -22,9 +22,11 @@ public class EmailServicesImpl implements IEmailServices {
         this.templateEngine = templateEngine;
     }
 
+    //Utilizamos el metodo de la Interfaz IEmailService
     @Override
     public void sendMail(EmailDTO email) throws MessagingException {
         try {
+            //Configuracion de del mensaje
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message,true,"UTF-8");
 
@@ -32,7 +34,7 @@ public class EmailServicesImpl implements IEmailServices {
             helper.setSubject(email.getAsunto());
 
             Context context = new Context();
-            context.setVariable("mensaje", "Esto es una prueba... 2");
+            context.setVariable("mensaje",email.getMensaje());
             String contextHTML = templateEngine.process("email", context);
 
             helper.setText(contextHTML,true);
